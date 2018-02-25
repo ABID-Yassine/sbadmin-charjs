@@ -13,29 +13,52 @@ const headers = new HttpHeaders().set('Content-Type', 'application/json')
     styleUrls: ['./bs-component.component.scss']
 })
 export class BsComponentComponent implements OnInit {
-    ngOnInit(): void {
-    }
 
     closeResult: string;
     constructor(private http: HttpClient, private modalService: NgbModal) { }
 
-    getDeps() {
+    alldata: any ;
 
+    lineChartData: Array <any> = [];
+    lineChartLabels: Array <any> = [];
+
+    // lineChartLabels: Array <any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+    lineChartType: string = 'line';
+
+    ngOnInit() {
         return new Promise(resolve => {
             this.http.get('http://34.253.70.101:8080/gameSession' , {headers}).subscribe(data => {
-                resolve(data);
+
+                this.alldata = data;
             }, err => {
                 console.log(err);
             });
         });
-
-
     }
 
-    open(content) {
+    open(content: any, item: any ) {
+
+        let playerPositionY:  Array <any> = [];
+        let targetPositionY : Array <any> = [];
+
+        let dataitem = item.recordingData.frames;
+        for (let frame of dataitem) {
+            this.lineChartLabels.push(frame.timestamp);
+            playerPositionY.push(frame.playerPositionY);
+            targetPositionY.push(frame.targetPositionY);
+        }
+
+        this.lineChartData.push(playerPositionY);
+        this.lineChartData.push(targetPositionY);
+
         this.modalService.open(content, { size: 'lg', windowClass: 'modal-adaptive' }).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
+
+
         }, (reason) => {
+
+            this.lineChartData = [];
+            this.lineChartLabels = [];
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
     }
@@ -51,23 +74,9 @@ export class BsComponentComponent implements OnInit {
     }
 
 
-    // lineChart
-    public lineChartData:Array<any> = [
-        [65, 59, 80, 81, 56, 55, 40],
-        [28, 48, 40, 19, 86, 27, 90]
-    ];
-    public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-    public lineChartType:string = 'line';
-    public pieChartType:string = 'pie';
 
-    // Pie
-    public pieChartLabels:string[] = ['Download Sales', 'In-Store Sales', 'Mail Sales'];
-    public pieChartData:number[] = [300, 500, 100];
 
-    // public randomizeType():void {
-    //     this.lineChartType = this.lineChartType === 'line' ? 'bar' : 'line';
-    //     this.pieChartType = this.pieChartType === 'doughnut' ? 'pie' : 'doughnut';
-    // }
+
 
     public chartClicked(e:any):void {
         console.log(e);

@@ -1,10 +1,4 @@
-<div>
-    <!--<app-modal></app-modal>-->
-</div>
-
-
 <div class="row">
-
 
 
     <div class="col-sm-12">
@@ -15,38 +9,22 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
+                    <th>runtimePlatform</th>
+                    <th>appVersionName</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
+                    <ng-container *ngFor="let item of alldata">
+                        <tr (click)="open(content,item)">
+                            <th scope="row">{{item.id}}</th>
+                            <td>{{item.runtimePlatform}}</td>
+                            <td>{{item.appVersionName}}</td>
+                        </tr>
+                    </ng-container>
                 </tbody>
             </table>
         </div>
 
-        <div class="card mb-3">
-            <div class="card-header">Modal</div>
-            <!-- Large modal -->
-            <div class="card-body">
-                <button class="btn btn-primary" (click)="open(content)">Large modal</button>
                 <ng-template #content let-c="close" let-d="dismiss">
                     <div class="modal-header">
                         <h4 class="modal-title">Modal title</h4>
@@ -68,8 +46,10 @@
                                     [chartType]="lineChartType"
                                     (chartHover)="chartHovered($event)"
                                     (chartClick)="chartClicked($event)"></canvas>
+
                         </div>
                         <div class="card-footer">
+
                             <!--<button (click)="randomizeType()" style="display: inline-block">Toggle</button>-->
                         </div>
 
@@ -78,8 +58,7 @@
                         <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
                     </div>
                 </ng-template>
+
             </div>
         </div>
-    </div>
-</div>
 
